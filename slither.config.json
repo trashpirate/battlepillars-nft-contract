@@ -1,0 +1,9 @@
+{
+    "filter_paths": "lib,src/ERC20Token.sol",
+    "solc_remaps": [
+        "ds-test/=lib/ds-test/src/",
+        "forge-std/=lib/forge-std/src/",
+        "@erc721a/contracts/=lib/ERC721A/contracts/",
+        "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/"
+    ]
+}
