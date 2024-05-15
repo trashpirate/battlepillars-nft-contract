@@ -4,7 +4,6 @@ pragma solidity ^0.8.20;
 
 import {Test, console} from "forge-std/Test.sol";
 import {NFTContract} from "../../src/NFTContract.sol";
-import {ERC20Token} from "./../../src/ERC20Token.sol";
 import {HelperConfig} from "../../script/helpers/HelperConfig.s.sol";
 import {DeployNFTContract} from "./../../script/deployment/DeployNFTContract.s.sol";
 import {MintNft, BatchMint, TransferNft, ApproveNft, BurnNft} from "./../../script/interactions/Interactions.s.sol";
@@ -16,7 +15,6 @@ contract TestInteractions is Test {
     HelperConfig.NetworkConfig networkConfig;
 
     // contracts
-    ERC20Token token;
     NFTContract nftContract;
 
     // users
@@ -37,15 +35,6 @@ contract TestInteractions is Test {
     modifier funded(address account) {
         // fund user with eth
         deal(account, 1000 ether);
-
-        // fund user tokens
-        vm.startPrank(token.owner());
-        token.transfer(account, STARTING_BALANCE);
-        vm.stopPrank();
-
-        // approve tokens
-        vm.prank(account);
-        token.approve(address(nftContract), STARTING_BALANCE);
         _;
     }
 
@@ -63,7 +52,6 @@ contract TestInteractions is Test {
         contractOwner = nftContract.owner();
 
         networkConfig = helperConfig.getActiveNetworkConfigStruct();
-        token = ERC20Token(nftContract.getPaymentToken());
     }
 
     /**

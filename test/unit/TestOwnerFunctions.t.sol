@@ -18,12 +18,10 @@ contract TestUserFunctions is Test {
     HelperConfig.NetworkConfig networkConfig;
 
     // contracts
-    ERC20Token token;
     NFTContract nftContract;
 
     // helpers
     address USER = makeAddr("user");
-    uint256 constant STARTING_BALANCE = 500_000_000 ether;
     address NEW_FEE_ADDRESS = makeAddr("fee");
     uint256 constant NEW_FEE = 0.001 ether;
     uint256 constant NEW_BATCH_LIMIT = 10;
@@ -39,8 +37,12 @@ contract TestUserFunctions is Test {
         address indexed feeAddress,
         uint96 indexed royaltyNumerator
     );
-    event EthFeeSet(address indexed sender, uint256 fee);
-    event TokenFeeSet(address indexed sender, uint256 fee);
+    event EthFeeSet(
+        address indexed sender,
+        uint256 tier,
+        uint256 fee,
+        uint256 limit
+    );
     event FeeAddressSet(address indexed sender, address feeAddress);
     event Paused(address indexed sender, bool isPaused);
 
@@ -55,15 +57,6 @@ contract TestUserFunctions is Test {
     modifier funded(address account) {
         // fund user with eth
         deal(account, 1000 ether);
-
-        // fund user tokens
-        vm.startPrank(token.owner());
-        token.transfer(account, STARTING_BALANCE);
-        vm.stopPrank();
-
-        // approve tokens
-        vm.prank(account);
-        token.approve(address(nftContract), STARTING_BALANCE);
         _;
     }
 
@@ -86,7 +79,6 @@ contract TestUserFunctions is Test {
         (nftContract, helperConfig) = deployment.run();
 
         networkConfig = helperConfig.getActiveNetworkConfigStruct();
-        token = ERC20Token(nftContract.getPaymentToken());
     }
 
     /**
@@ -227,18 +219,18 @@ contract TestUserFunctions is Test {
     function test__SetEthFee() public {
         address owner = nftContract.owner();
         vm.prank(owner);
-        nftContract.setEthFee(NEW_FEE);
-        assertEq(nftContract.getEthFee(), NEW_FEE);
+        nftContract.setFee(0, NEW_FEE, 30);
+        assertEq(nftContract.getFee(), NEW_FEE);
     }
 
     function test__EmitEvent__SetEthFee() public {
         address owner = nftContract.owner();
 
         vm.expectEmit(true, true, true, true);
-        emit EthFeeSet(owner, NEW_FEE);
+        emit EthFeeSet(owner, 0, NEW_FEE, 30);
 
         vm.prank(owner);
-        nftContract.setEthFee(NEW_FEE);
+        nftContract.setFee(0, NEW_FEE, 30);
     }
 
     function test__RevertWhen__NotOwnerSetsEthFee() public {
@@ -250,39 +242,7 @@ contract TestUserFunctions is Test {
                 USER
             )
         );
-        nftContract.setEthFee(NEW_FEE);
-    }
-
-    /**
-     * SET TOKEN FEE
-     */
-    function test__SetTokenFee() public {
-        address owner = nftContract.owner();
-        vm.prank(owner);
-        nftContract.setTokenFee(NEW_FEE);
-        assertEq(nftContract.getTokenFee(), NEW_FEE);
-    }
-
-    function test__EmitEvent__SetTokenFee() public {
-        address owner = nftContract.owner();
-
-        vm.expectEmit(true, true, true, true);
-        emit TokenFeeSet(owner, NEW_FEE);
-
-        vm.prank(owner);
-        nftContract.setTokenFee(NEW_FEE);
-    }
-
-    function test__RevertWhen__NotOwnerSetsTokenFee() public {
-        vm.prank(USER);
-
-        vm.expectRevert(
-            abi.encodeWithSelector(
-                Ownable.OwnableUnauthorizedAccount.selector,
-                USER
-            )
-        );
-        nftContract.setTokenFee(NEW_FEE);
+        nftContract.setFee(0, NEW_FEE, 30);
     }
 
     /**
@@ -322,8 +282,9 @@ contract TestUserFunctions is Test {
      * WITHDRAW TOKENS
      */
     function test__WithdrawTokens() public funded(USER) {
+        ERC20Token token = new ERC20Token(USER);
         vm.prank(USER);
-        token.transfer(address(nftContract), STARTING_BALANCE / 2);
+        token.transfer(address(nftContract), 1000 ether);
 
         uint256 contractBalance = token.balanceOf(address(nftContract));
         assertGt(contractBalance, 0);
@@ -339,9 +300,36 @@ contract TestUserFunctions is Test {
         assertEq(newBalance, initialBalance + contractBalance);
     }
 
-    function test__RevertWhen__NotOwnerWithdrawsTokens() public funded(USER) {
+    function test__RevertsWhen__TokenTransferFails()
+        public
+        funded(USER)
+        unpaused
+    {
+        uint256 amount = 1000 ether;
+        ERC20Token token = new ERC20Token(USER);
         vm.prank(USER);
-        token.transfer(address(nftContract), STARTING_BALANCE / 2);
+        token.transfer(address(nftContract), amount);
+
+        uint256 contractBalance = token.balanceOf(address(nftContract));
+        assertGt(contractBalance, 0);
+
+        address owner = nftContract.owner();
+
+        vm.mockCall(
+            address(token),
+            abi.encodeWithSelector(token.transfer.selector, owner, amount),
+            abi.encode(false)
+        );
+
+        vm.expectRevert(NFTContract.NFTContract_TokenTransferFailed.selector);
+        vm.prank(owner);
+        nftContract.withdrawTokens(address(token), owner);
+    }
+
+    function test__RevertWhen__NotOwnerWithdrawsTokens() public funded(USER) {
+        ERC20Token token = new ERC20Token(USER);
+        vm.prank(USER);
+        token.transfer(address(nftContract), 1000 ether);
 
         address owner = nftContract.owner();
         vm.expectRevert(

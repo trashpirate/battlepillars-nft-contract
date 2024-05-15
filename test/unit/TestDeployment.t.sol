@@ -36,9 +36,10 @@ contract TestDeployment is Test {
         assertEq(nftContract.getBaseURI(), networkConfig.args.baseURI);
         assertEq(nftContract.contractURI(), networkConfig.args.contractURI);
 
+        assertEq(nftContract.getTier(), 0);
+        assertEq(nftContract.getTierLimit(0), 50);
         assertEq(nftContract.getBatchLimit(), 50);
-        assertEq(nftContract.getTokenFee(), networkConfig.args.tokenFee);
-        assertEq(nftContract.getEthFee(), networkConfig.args.ethFee);
+        assertEq(nftContract.getFee(), 0.045 ether);
         assertEq(nftContract.isPaused(), true);
 
         assertEq(nftContract.supportsInterface(0x80ac58cd), true); // ERC721
@@ -62,12 +63,23 @@ contract TestDeployment is Test {
     /**
      * DEPLOYMENT
      */
-    function test__Deployment() public {
+    function test__RevertWhen__NoBaseURI() public {
         NFTContract.ConstructorArguments memory args = networkConfig.args;
 
         args.baseURI = "";
 
         vm.expectRevert(NFTContract.NFTContract_NoBaseURI.selector);
+        new NFTContract(args);
+    }
+
+    function test__RevertWhen__ZeroFeeAddress() public {
+        NFTContract.ConstructorArguments memory args = networkConfig.args;
+
+        args.feeAddress = address(0);
+
+        vm.expectRevert(
+            NFTContract.NFTContract_FeeAddressIsZeroAddress.selector
+        );
         new NFTContract(args);
     }
 }
