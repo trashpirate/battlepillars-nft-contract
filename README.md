@@ -42,16 +42,11 @@
 
 Smart contract inheriting from ERC721A with a native and ERC20 token fee for minting including full deployment/testing suite using Foundry.
 
-### Smart Contracts Testnet
+### NFT Contract Testnet
+https://testnet.bscscan.com/address/0x658b06eb7f072548e6ebb231e60991b54063d2e5
 
-**NFT Contract**
-https://testnet.bscscan.com/address/0xd2f0c63bc07349221c7ced44008787b54d2bd587
-
-### Smart Contracts Mainnet
-
-**Payment Token Contract**   
-
-**NFT Contract**  
+### NFT Contract Mainnet
+https://bscscan.com/address/0xe80bce560b0365a8286d53fdd68af207ee71a7d3#readContract
 
 <!-- GETTING STARTED -->
 ## Getting Started

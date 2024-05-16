@@ -56,7 +56,7 @@ contract HelperConfig is Script {
                 args: NFTContract.ConstructorArguments({
                     name: NAME,
                     symbol: SYMBOL,
-                    owner: 0xA94D468Af30923169e8A146472C03f223dBeB8B0,
+                    owner: 0x0d8470Ce3F816f29AA5C0250b64BfB6421332829,
                     feeAddress: 0x0d8470Ce3F816f29AA5C0250b64BfB6421332829,
                     baseURI: BASE_URI,
                     contractURI: CONTRACT_URI,
