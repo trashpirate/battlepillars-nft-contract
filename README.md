@@ -2,17 +2,11 @@
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?style=for-the-badge)
 ![Forge](https://img.shields.io/badge/Forge-v0.2.0-blue?style=for-the-badge)
-[![License: MIT](https://img.shields.io/github/license/trashpirate/nft-contract?style=for-the-badge)](https://github.com/trashpirate/nft-contract/blob/master/LICENSE)
+[![License: MIT](https://img.shields.io/github/license/trashpirate/battlepillars-nft-contract?style=for-the-badge)](https://github.com/trashpirate/battlepillars-nft-contract/blob/master/LICENSE)
 
 [![Website: nadinaoates.com](https://img.shields.io/badge/Portfolio-00e0a7?style=for-the-badge&logo=Website)](https://nadinaoates.com)
 [![LinkedIn: nadinaoates](https://img.shields.io/badge/LinkedIn-0a66c2?style=for-the-badge&logo=LinkedIn&logoColor=f5f5f5)](https://linkedin.com/in/nadinaoates)
 [![Twitter: N0\_crypto](https://img.shields.io/badge/@N0\_crypto-black?style=for-the-badge&logo=X)](https://twitter.com/N0\_crypto)
-
-<!-- ![Node](https://img.shields.io/badge/node-v20.10.0-blue.svg?style=for-the-badge)
-![NPM](https://img.shields.io/badge/npm-v10.2.3-blue?style=for-the-badge)
-![Nextjs](https://img.shields.io/badge/next-v13.5.4-blue?style=for-the-badge)
-![Tailwindcss](https://img.shields.io/badge/TailwindCSS-v3.0-blue?style=for-the-badge)
-![Wagmi](https://img.shields.io/badge/Wagmi-v1.4.3-blue?style=for-the-badge) -->
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -40,13 +34,13 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Smart contract inheriting from ERC721A with a native and ERC20 token fee for minting including full deployment/testing suite using Foundry.
+Smart contract inheriting from ERC721A with a native token fee for minting including full deployment/testing suite using Foundry. The token IDs are pseudo-randomized and are minted with a dynamic fee (increasing price tiers).
 
 ### NFT Contract Testnet
 https://testnet.bscscan.com/address/0x658b06eb7f072548e6ebb231e60991b54063d2e5
 
 ### NFT Contract Mainnet
-https://bscscan.com/address/0xe80bce560b0365a8286d53fdd68af207ee71a7d3#readContract
+https://bscscan.com/address/0xe80bce560b0365a8286d53fdd68af207ee71a7d3
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -55,11 +49,11 @@ https://bscscan.com/address/0xe80bce560b0365a8286d53fdd68af207ee71a7d3#readContr
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/trashpirate/nft-contract.git
+   git clone https://github.com/trashpirate/battlepillars-nft-contract.git
    ```
 2. Navigate to the project directory
    ```sh
-   cd nft-contract
+   cd battlepillars-nft-contract
    ```
 3. Install Foundry submodules
    ```sh
