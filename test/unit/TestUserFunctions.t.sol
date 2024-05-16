@@ -86,7 +86,7 @@ contract TestUserFunctions is Test {
     function test__Mint(
         uint256 quantity,
         address account
-    ) public unpaused noBatchLimit skipFork {
+    ) public unpaused skipFork {
         quantity = bound(quantity, 1, nftContract.getBatchLimit());
         vm.assume(account != address(0));
 
@@ -322,14 +322,30 @@ contract TestUserFunctions is Test {
         assertEq(nftContract.balanceOf(USER), 1);
         assertEq(
             nftContract.tokenURI(1),
-            string.concat(networkConfig.args.baseURI, "1")
+            string.concat(networkConfig.args.baseURI, "47")
         );
+    }
+
+    function test__batchTokenURI() public funded(USER) unpaused {
+        uint256 roll = 2;
+        for (uint256 index = 0; index < 4; index++) {
+            vm.prevrandao(bytes32(uint256(index + roll)));
+
+            uint256 batchLimit = nftContract.getBatchLimit();
+            uint256 ethFee = nftContract.getFee() * batchLimit;
+
+            nftContract.mint{value: ethFee}(batchLimit);
+        }
+
+        for (uint256 index = 0; index < nftContract.getMaxSupply(); index++) {
+            console.log(nftContract.tokenURI(index + 1));
+        }
     }
 
     /// forge-config: default.fuzz.runs = 3
     function test__UniqueTokenURI(
         uint256 roll
-    ) public funded(USER) unpaused noBatchLimit skipFork {
+    ) public funded(USER) unpaused skipFork {
         roll = bound(roll, 0, 100000000000);
         TestHelper testHelper = new TestHelper();
 

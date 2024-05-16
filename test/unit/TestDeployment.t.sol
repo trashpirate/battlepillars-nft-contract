@@ -47,7 +47,7 @@ contract TestDeployment is Test {
 
         uint256 salePrice = 100;
         (address feeAddress, uint256 royaltyAmount) = nftContract.royaltyInfo(
-            0,
+            1,
             salePrice
         );
         assertEq(feeAddress, networkConfig.args.feeAddress);
@@ -56,7 +56,7 @@ contract TestDeployment is Test {
             (networkConfig.args.royaltyNumerator * 100) / 10000
         );
 
-        vm.expectRevert(IERC721A.URIQueryForNonexistentToken.selector);
+        vm.expectRevert(IERC721A.OwnerQueryForNonexistentToken.selector);
         nftContract.tokenURI(1);
     }
 

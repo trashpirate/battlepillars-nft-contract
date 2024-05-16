@@ -7,17 +7,15 @@ import {NFTContract} from "./../../src/NFTContract.sol";
 
 contract HelperConfig is Script {
     // deployment arguments
-    address public constant TOKENOWNER =
-        0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266;
 
-    string public constant NAME = "NFT Collection";
-    string public constant SYMBOL = "MYNFT";
+    string public constant NAME = "Battlepillars";
+    string public constant SYMBOL = "BATTLEPILLAR";
     string public constant BASE_URI =
-        "ipfs://bafybeihgsbcbmy3k3iowwhwv2kabdnvwsp2tee5bfm5yzwjvw7roc52spm/";
+        "ipfs://bafybeihvxdrut363rlk65caliu6utzyqo45cm6p5nelbl44hiclo4hhn2i/";
     string public constant CONTRACT_URI =
-        "ipfs://bafybeihgsbcbmy3k3iowwhwv2kabdnvwsp2tee5bfm5yzwjvw7roc52spm/";
-    uint256 public constant MAX_SUPPLY = 1000;
-    uint96 public constant ROYALTY = 100;
+        "ipfs://bafybeieomuw57yvoi44xkg6zyfzohaxiblr4wv4iafhwnfgprzzc4ot5xa/contractMetadata";
+    uint256 public constant MAX_SUPPLY = 235;
+    uint96 public constant ROYALTY = 500;
 
     // chain configurations
     NetworkConfig public activeNetworkConfig;
@@ -58,8 +56,8 @@ contract HelperConfig is Script {
                 args: NFTContract.ConstructorArguments({
                     name: NAME,
                     symbol: SYMBOL,
-                    owner: 0x4671a210C4CF44C43dC5E44DAf68e64D46cdc703,
-                    feeAddress: 0x0cf66382d52C2D6c1D095c536c16c203117E2B2f,
+                    owner: 0xA94D468Af30923169e8A146472C03f223dBeB8B0,
+                    feeAddress: 0x0d8470Ce3F816f29AA5C0250b64BfB6421332829,
                     baseURI: BASE_URI,
                     contractURI: CONTRACT_URI,
                     maxSupply: MAX_SUPPLY,
@@ -74,7 +72,7 @@ contract HelperConfig is Script {
                 args: NFTContract.ConstructorArguments({
                     name: NAME,
                     symbol: SYMBOL,
-                    owner: 0x11F392Ba82C7d63bFdb313Ca63372F6De21aB448,
+                    owner: 0xA94D468Af30923169e8A146472C03f223dBeB8B0,
                     feeAddress: 0x7Bb8be3D9015682d7AC0Ea377dC0c92B0ba152eF,
                     baseURI: BASE_URI,
                     contractURI: CONTRACT_URI,

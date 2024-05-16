@@ -38,25 +38,25 @@ format :; forge fmt
 anvil :; anvil -m 'test test test test test test test test test test test junk' --steps-tracing --block-time 1
 
 # spin up fork
-fork :; @anvil --fork-url ${RPC_ETH_MAIN} --fork-block-number 19799039 --fork-chain-id 1 --chain-id 123
+fork :; @anvil --fork-url ${RPC_BSC_MAIN} --fork-block-number 38759370 --fork-chain-id 56 --chain-id 123
 
 # deployment
 deploy-local: 
 	@forge script script/deployment/DeployNFTContract.s.sol:DeployNFTContract --rpc-url localhost --private-key ${DEFAULT_ANVIL_KEY} --sender 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 --broadcast 
 
-deploy-token-testnet: 
-	@forge script script/deployment/DeployERC20Token.s.sol:DeployERC20Token --rpc-url $(RPC_ETH_SEPOLIA) --account <KeystoreName> --sender <walletAddress> --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
-
 deploy-testnet: 
-	@forge script script/deployment/DeployNFTContract.s.sol:DeployNFTContract --rpc-url $(RPC_ETH_SEPOLIA) --account <KeystoreName> --sender <walletAddress> --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
+	@forge script script/deployment/DeployNFTContract.s.sol:DeployNFTContract --rpc-url $(RPC_BSC_TEST) --account Battlepillar-Deployer --sender 0xA94D468Af30923169e8A146472C03f223dBeB8B0 --broadcast --verify --etherscan-api-key $(BSCSCAN_KEY) -vvvv
 
 deploy-mainnet: 
-	@forge script script/deployment/DeployNFTContract.s.sol:DeployNFTContract --rpc-url $(RPC_ETH_MAIN) --account <KeystoreName> --sender <walletAddress> --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
+	@forge script script/deployment/DeployNFTContract.s.sol:DeployNFTContract --rpc-url $(RPC_BSC_MAIN) --account Battlepillar-Deployer --sender 0xA94D468Af30923169e8A146472C03f223dBeB8B0 --broadcast --verify --etherscan-api-key $(BSCSCAN_KEY) -vvvv
 
 
 # interaction
 mint-testnet:
-	@forge script script/interactions/Interactions.s.sol:MintNft --rpc-url $(RPC_ETH_SEPOLIA) --account <KeystoreName> --sender <walletAddress> --broadcast
+	@forge script script/interactions/Interactions.s.sol:MintNft --rpc-url $(RPC_BSC_TEST) --account Battlepillar-Deployer --sender 0xA94D468Af30923169e8A146472C03f223dBeB8B0 --broadcast
+
+mint-batch-testnet:
+	@forge script script/interactions/Interactions.s.sol:BatchMint --rpc-url $(RPC_BSC_TEST) --account Battlepillar-Deployer --sender 0xA94D468Af30923169e8A146472C03f223dBeB8B0 --broadcast
 
 
 # security

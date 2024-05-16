@@ -40,7 +40,7 @@ contract BatchMint is Script {
         );
         console.log("Minting gas: ", gasLeft - gasleft());
         vm.stopBroadcast();
-        console.log("Minted 1 NFT with:", msg.sender);
+        console.log("Minted batch with:", msg.sender);
     }
 
     function run() external {
